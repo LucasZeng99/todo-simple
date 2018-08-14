@@ -4,5 +4,11 @@
   "description": "todo in electron and vanilla js",
   "main": "main.js",
   "author": "Lucas Zeng",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^2.0.7"
+  },
+  "scripts": {
+    "dev": "electron ."
+  }
 }

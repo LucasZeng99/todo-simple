@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* the header, close and minimize buttons. */
+header {
+
+}
+/* the main view below the top bar. */
+main {
+
+}
+/* main structure of the page */
+    .todo-sidebar {
+
+    }
+            .list-names {
+
+            }
+
+                    .list-name {
+
+                    }
+
+            .list-add {
+
+            }
+    .todo-main {
+
+    }
+            .todo-main-bg {
+
+            }
+            .todo-main-items {
+
+            }
+                    .items {
+
+                    }
+                            .item {
+
+                            }
+                    .item-add {
+
+                    }
+
+/* animation */
+
+
+/* frames */
