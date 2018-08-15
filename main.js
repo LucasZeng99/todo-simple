@@ -22,8 +22,12 @@ ipcMain.on('minimize', () => {
     }
 })
 
-ipcMain.on('addNewList', (event, listName) => {
-    console.log(`adding new list: ${listName}`)
+ipcMain.on('addNewList', (event, listName, targetListId) => {
+    console.log(`adding new list: ${listName}, target: ${targetListId}`)
+})
+
+ipcMain.on('addNewItem', (event, listName, targetListId) => {
+    console.log(`adding new item: ${listName}, target: ${targetListId}`)
 })
 
 app.on('ready', createMainWindow)
