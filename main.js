@@ -16,4 +16,14 @@ ipcMain.on('close', () => {
     app.quit()
 })
 
+ipcMain.on('minimize', () => {
+    if (win !== null) {
+        win.minimize()
+    }
+})
+
+ipcMain.on('addNewList', (event, listName) => {
+    console.log(`adding new list: ${listName}`)
+})
+
 app.on('ready', createMainWindow)
