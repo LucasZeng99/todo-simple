@@ -2,6 +2,10 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        list-style: none;
+}
+ul {
+        list-style: none;
 }
 body {
         display: flex;
@@ -51,9 +55,18 @@ main {
         background-color: tomato;
 }
 
-.list-names {}
+.list-names {
+        text-decoration: none;
+        list-style: none;
+}
 
-.list-name {}
+.list-name {
+        margin: 10px;
+        padding: 10px;
+}
+.list-name:hover {
+        background-color: rgb(255, 203, 155);
+}
 
 .list-add {}
 
@@ -61,15 +74,31 @@ main {
 .todo-main {
         flex-grow: 1;
         background-color: antiquewhite;
+        display: flex;
+        flex-direction: column;
 }
 
-.todo-main-bg {}
+.todo-main-bg {
+        height: 60px;
+        background-color: lightgreen;
+}
 
-.todo-main-items {}
+.todo-main-items {
+        margin: 6px;
+        padding: 6px 10px;
+}
 
-.items {}
+.items {
+        text-decoration: none;
+        list-style: none;
+}
 
-.item {}
+.item {
+        margin: 10px;
+        padding: 10px;
+        background-color: chocolate;
+        width: 100%; height: 25px;
+}
 
 .item-add {}
 

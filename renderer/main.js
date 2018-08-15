@@ -21,7 +21,10 @@ buttonMinimize.addEventListener('click', () => ipcRenderer.send('minimize'))
 
 buttonAddList.addEventListener('click', () => {
   let inputElement = document.createElement('input')
-
+  inputElement.focus()
+  inputElement.addEventListener('blur', () => {
+    inputElement.remove()
+  })
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
@@ -49,7 +52,10 @@ buttonAddList.addEventListener('click', () => {
 
 buttonAddItem.addEventListener('click', () => {
   let inputElement = document.createElement('input')
-
+  inputElement.focus()
+  inputElement.addEventListener('blur', () => {
+    inputElement.remove()
+  })
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
