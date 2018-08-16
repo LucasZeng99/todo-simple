@@ -1,20 +1,26 @@
 const {ipcRenderer} = require('electron')
 
+// element targeting
 let buttonClose = document.getElementById('X')
 let buttonMinimize = document.getElementById('_')
 let buttonAddList = document.getElementById('list-add')
 let buttonAddItem = document.getElementById('item-add')
 
-// options for the app
+// app operations
 buttonClose.addEventListener('click', () => ipcRenderer.send('close'))
 buttonMinimize.addEventListener('click', () => ipcRenderer.send('minimize'))
 
-let targetList = document.getElementById('today')
-
+// lists and items container array targeting
 let listsContainer = document.getElementById('list-names')// li
 let itemsContainer = document.getElementById('items') // li
 
-console.log(Object.keys(localStorage))
+/**
+ * 
+ * TODO: replace item id with a counter.
+ * 
+ */
+
+// helper functions (independant)
 let createItem = (val) => {
   let newItem = document.createElement('ul')
       newItem.classList.add('item')
@@ -30,6 +36,17 @@ let createItem = (val) => {
       })
   return newItem
 }
+let createList = (val) => {
+  let newList = document.createElement('ul')
+    newList.classList.add('list-name')
+    newList.id = val
+    newList.textContent = val
+    newList.addEventListener('click', () => {
+      changeTarget(newList)
+    })
+    return newList
+}
+// updating functions
 let storeCurrentList = () => {
   // create object to be stored.
   let items = document.getElementsByClassName('item')
@@ -40,6 +57,11 @@ let storeCurrentList = () => {
   localStorage.setItem(targetList.id, JSON.stringify(itemsArray))
 }
 
+/**
+ * 
+ * @param {} newTargetElement 
+ * dependent on `fetchItems()` and `itemsContainer`
+ */
 let changeTarget = (newTargetElement) => {
   targetList = newTargetElement
 
@@ -47,47 +69,55 @@ let changeTarget = (newTargetElement) => {
   while (itemsContainer.firstChild) {
     itemsContainer.removeChild(itemsContainer.firstChild)
   }
-
-  // fetch previous items from local storage
-  itemsStringFromLocalStorage = localStorage.getItem(targetList.id)
-  let itemsArray = JSON.parse(itemsStringFromLocalStorage)
-  if (itemsArray !== null) {
-    let childs = itemsArray.map(item => {
-      let x = createItem(item)
-      return x
-    })
-    for (let item of childs) {
-      itemsContainer.appendChild(item)
-    }
-  }
-  
+  fetchItems()
 }
+
+// initialize functions
+/**
+ * dependent on `createItem()` and `itemsContainer`.
+ */
 let fetchItems = () => {
   let items = localStorage.getItem(targetList.id)
   items = JSON.parse(items)
   for (let itemId of items) {
     let newItem = createItem(itemId)
     itemsContainer.appendChild(newItem)
-  }
+  } // push to item containers for this targetlist.
 }
+
+/**
+ * dependent on `createList()`, `listsContainer`, `targetList`
+ */
 let fetchList = () => {
   let lists = Object.keys(localStorage)
+  console.log(`lists: ${lists}`)
+
   // remove all list to avoid repetance
   while (listsContainer.firstChild) {
     listsContainer.removeChild(listsContainer.firstChild)
   }
+
+  // push all list to list container
   for (let listId of lists) {
-    let newList = document.createElement('ul')
-    newList.classList.add('list-name')
-    newList.id = listId
-    newList.textContent = listId
-    newList.addEventListener('click', () => {
-      changeTarget(newList)
-    })    
-    // append this child to the list of lists.
+    let newList = createList(listId)
     listsContainer.appendChild(newList)
   }
+
+  // check for 'today' existence
+  if (lists.includes('today')) {
+    console.log(`it's in!`)
+  } else {
+    let todayList = createList('today')
+    listsContainer.appendChild(todayList)
+  }
+
+  // default list target to today
+  let defaultListTarget = document.getElementById('today')
+  targetList = defaultListTarget
 }
+
+
+
 
 fetchList()
 fetchItems()
@@ -112,8 +142,7 @@ buttonAddList.addEventListener('click', () => {
       changeTarget(newList)
       // destruct input element
       inputElement.remove()
-      // store everything in this list to localStorage
-      // TODO: check for repetitive naming
+      // store to localStorage
       storeCurrentList()
     }
   })
