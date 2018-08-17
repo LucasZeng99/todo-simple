@@ -17,13 +17,13 @@ header {
         position: absolute;
         top: 0; left: 0;
         height: 30px; width: 100%;
-        z-index: 99;
 }
 
 .options {
         position: absolute;
         right: 0; top: 0;
         display: flex;
+        z-index: 99;
 }
 .options > div {
         text-align: center;
@@ -31,13 +31,24 @@ header {
         line-height: 30px;
         background-color: none;
         transition: 0.2s;
+        z-index: 99;
 }
 .options > div:hover {
         background-color: #FF7043;
 }
 
 /* the main view below the top bar. */
+/* 
+palette:
+FF8A65 light red
+607D8B blue grey dark
+90A4AE blue grey medium
+CFD8DC blue grey light
+212121 darker grey
+757575 dark grey
+F5F5F5 light grey
 
+*/
 main {
         width: 100%; height: 100%;
         position: absolute;
@@ -52,7 +63,7 @@ main {
 .todo-sidebar {
         width: 200px; height: 100%;
         min-width: 200px;
-        background-color: tomato;
+        background-color: rgb(127, 152, 165);
 }
 
 .list-names {
@@ -61,11 +72,17 @@ main {
 }
 
 .list-name {
-        margin: 10px;
-        padding: 10px;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 10px;
+        text-align: left;
+        vertical-align: middle;
 }
 .list-name:hover {
-        background-color: rgb(255, 203, 155);
+        background-color: rgb(136, 190, 214);
+}
+.chosen-list {
+        background-color: rgb(66, 124, 153);
 }
 
 .list-add {}
@@ -73,19 +90,18 @@ main {
 /* main list content */
 .todo-main {
         flex-grow: 1;
-        background-color: antiquewhite;
+        background-color: #F1F1F1;
         display: flex;
         flex-direction: column;
 }
 
 .todo-main-bg {
         height: 60px;
-        background-color: lightgreen;
+        background-color: #303F9F;
 }
 
 .todo-main-items {
-        margin: 6px;
-        padding: 6px 10px;
+        
 }
 
 .items {
@@ -94,38 +110,44 @@ main {
 }
 
 .item {
-        padding-left: 10px;
+        padding: 5px 10px;
         text-align: left;
         line-height: 40px;
         vertical-align: middle;
-        margin: 10px;
-        background-color: chocolate;
-        width: calc(100%-20px); height: 40px;
+        background-color: #F5F5F5;
+        width: calc(100%-20px); height: 50px;
+        border-bottom: rgb(150, 195, 218) solid 2px;
 }
 
 #item-add {
         text-align: center;
-        padding: 10px;
-        margin: 10px;
+        height: 50px;
+        line-height: 50px;
+        vertical-align: middle;
 }
 #item-add:hover {
-        background-color: burlywood;
+        background-color: rgb(225, 230, 238);
 }
 
 #list-add {
         text-align: center;
-        padding: 10px;
-        margin: 10px;
+        vertical-align: middle;
+        height: 40px;
+        line-height: 40px;
 }
 #list-add:hover {
-        background-color: burlywood;
+        background-color: #CFD8DC;;
 }
 
 .input {
         outline: none;
-        width: calc(100% - 20px);
+        border: none;
+        height: 50px;
+        font-size: 1rem;
+        background-color: rgb(226, 232, 235);
+        width: calc(100%);
         padding: 10px;
-        margin: 10px;
+        border-bottom: #FF5722 solid 2px;
 }
 /* animation */
 

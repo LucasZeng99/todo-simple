@@ -1,4 +1,4 @@
-const {ipcRenderer} = require('electron')
+// const {ipcRenderer} = require('electron')
 
 // element targeting
 let buttonClose = document.getElementById('X')
@@ -7,8 +7,8 @@ let buttonAddList = document.getElementById('list-add')
 let buttonAddItem = document.getElementById('item-add')
 
 // app operations
-buttonClose.addEventListener('click', () => ipcRenderer.send('close'))
-buttonMinimize.addEventListener('click', () => ipcRenderer.send('minimize'))
+// buttonClose.addEventListener('click', () => ipcRenderer.send('close'))
+// buttonMinimize.addEventListener('click', () => ipcRenderer.send('minimize'))
 
 // lists and items container array targeting
 let listsContainer = document.getElementById('list-names')// li
@@ -45,7 +45,7 @@ let createList = (val) => {
       changeTarget(newList)
     })
     return newList
-}
+} // **warning** dependent on changeTarget()
 // updating functions
 let storeCurrentList = () => {
   // create object to be stored.
@@ -63,13 +63,21 @@ let storeCurrentList = () => {
  * dependent on `fetchItems()` and `itemsContainer`
  */
 let changeTarget = (newTargetElement) => {
+  targetList.classList.remove('chosen-list')
   targetList = newTargetElement
-
+  targetList.classList.add('chosen-list')
   // remove all current items of the old list
   while (itemsContainer.firstChild) {
     itemsContainer.removeChild(itemsContainer.firstChild)
   }
   fetchItems()
+
+  // remove all input elements
+  let inputElements = document.getElementsByClassName('input')
+  console.log(inputElements)
+  for (let el of inputElements) {
+    el.blur()
+  }
 }
 
 // initialize functions
@@ -79,10 +87,12 @@ let changeTarget = (newTargetElement) => {
 let fetchItems = () => {
   let items = localStorage.getItem(targetList.id)
   items = JSON.parse(items)
-  for (let itemId of items) {
-    let newItem = createItem(itemId)
-    itemsContainer.appendChild(newItem)
-  } // push to item containers for this targetlist.
+  if (items !== null) {
+    for (let itemId of items) {
+      let newItem = createItem(itemId)
+      itemsContainer.appendChild(newItem)
+    } // push to item containers for this targetlist.
+  }
 }
 
 /**
@@ -114,6 +124,7 @@ let fetchList = () => {
   // default list target to today
   let defaultListTarget = document.getElementById('today')
   targetList = defaultListTarget
+  targetList.classList.add('chosen-list')
 }
 
 
@@ -122,48 +133,52 @@ let fetchList = () => {
 fetchList()
 fetchItems()
 
+
 buttonAddList.addEventListener('click', () => {
   let inputElement = document.createElement('input')
   inputElement.className = 'input'
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
-      let newList = document.createElement('ul')
-      newList.classList.add('list-name')
-      newList.id = inputElement.value
-      newList.textContent = inputElement.value
-      newList.addEventListener('click', () => {
-        changeTarget(newList)
-      })
-      // append this child to the list of lists.
+      let newList = createList(inputElement.value)
       listsContainer.appendChild(newList)
-      
       // change target list to current list
       changeTarget(newList)
       // destruct input element
-      inputElement.remove()
+      inputElement.blur()
       // store to localStorage
       storeCurrentList()
     }
   })
+
+  inputElement.addEventListener('blur', () => {
+    inputElement.remove()
+  })
+  
   buttonAddList.insertAdjacentElement('beforebegin', inputElement)
+  inputElement.focus()
 })
 
 buttonAddItem.addEventListener('click', () => {
   let inputElement = document.createElement('input')
   inputElement.className = 'input'
-  inputElement.focus()
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
       let newItem = createItem(inputElement.value)
       itemsContainer.appendChild(newItem)
       // destruct input element
-      inputElement.remove()
+      inputElement.blur()
       storeCurrentList()
     }
   })
+
+  inputElement.addEventListener('blur', (event) => {
+    inputElement.remove()
+  })
+
   buttonAddItem.insertAdjacentElement('beforebegin', inputElement)
+  inputElement.focus()
 })
 
 console.log(localStorage)
