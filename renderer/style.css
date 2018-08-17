@@ -14,16 +14,18 @@ body {
 /* the header, close and minimize buttons. */
 
 header {
-        position: absolute;
+        position: fixed;
         top: 0; left: 0;
         height: 30px; width: 100%;
+        z-index: 99;
+        -webkit-app-region: drag;
 }
 
 .options {
-        position: absolute;
+        position: fixed;
         right: 0; top: 0;
         display: flex;
-        z-index: 99;
+        -webkit-app-region: no-drag;
 }
 .options > div {
         text-align: center;
@@ -31,7 +33,6 @@ header {
         line-height: 30px;
         background-color: none;
         transition: 0.2s;
-        z-index: 99;
 }
 .options > div:hover {
         background-color: #FF7043;
@@ -53,14 +54,16 @@ main {
         width: 100%; height: 100%;
         position: absolute;
         top: 0; left: 0;
-        background-color: rgb(250, 215, 215);
-        display: flex;
+        background-color: rgb(212, 216, 219);
         z-index: 1;
 }
 
 /* main structure of the page */
 /* side bar of lists */
 .todo-sidebar {
+        padding-top: 30px;
+        position: fixed;
+        left: 0; top: 0;
         width: 200px; height: 100%;
         min-width: 200px;
         background-color: rgb(127, 152, 165);
@@ -89,7 +92,9 @@ main {
 
 /* main list content */
 .todo-main {
-        flex-grow: 1;
+        position: absolute;
+        top: 0; left: 200px;
+        width: calc(100% - 200px);
         background-color: #F1F1F1;
         display: flex;
         flex-direction: column;

@@ -3,7 +3,7 @@ const path = require("path")
 let win 
 
 createMainWindow = () => {
-    win = new BrowserWindow({width: 800, height: 600, frame: false})
+    win = new BrowserWindow({frame: false, width: 1000, height: 800, minWidth: 300, minHeight: 600})
 
     win.loadFile(path.resolve(__dirname, './renderer/index.html'))
     win.webContents.openDevTools()
