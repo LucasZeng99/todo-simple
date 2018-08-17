@@ -1,4 +1,4 @@
-// const {ipcRenderer} = require('electron')
+const {ipcRenderer} = require('electron')
 
 // element targeting
 let buttonClose = document.getElementById('X')
@@ -7,8 +7,8 @@ let buttonAddList = document.getElementById('list-add')
 let buttonAddItem = document.getElementById('item-add')
 
 // app operations
-// buttonClose.addEventListener('click', () => ipcRenderer.send('close'))
-// buttonMinimize.addEventListener('click', () => ipcRenderer.send('minimize'))
+buttonClose.addEventListener('click', () => ipcRenderer.send('close'))
+buttonMinimize.addEventListener('click', () => ipcRenderer.send('minimize'))
 
 // lists and items container array targeting
 let listsContainer = document.getElementById('list-names')// li
