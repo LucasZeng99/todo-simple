@@ -19,7 +19,6 @@ let itemsContainer = document.getElementById('items') // li
  * TODO: replace item id with a counter.
  * 
  */
-
 // helper functions (independant)
 let createItem = (val, id) => {
   let newItem = document.createElement('ul')
@@ -29,9 +28,10 @@ let createItem = (val, id) => {
 
       // listeners for every item of a list.
       newItem.addEventListener('mouseup', e => {
-        if (e.button === 2) { // a right click.
-          newItem.remove() // remove the item
-          storeCurrentList()
+        if (e.button === 2) { // a right click
+
+        } else if (e.button === 0) {
+          console.log('a left click')
         }
       })
   return newItem
@@ -92,7 +92,6 @@ let fetchItems = () => {
   if (items !== null) {
     // push to item containers for this targetlist.
     items.forEach((itemId, index) => {
-      console.log('index of item: ' + index)
       let newItem = createItem(itemId, index)
       itemsContainer.appendChild(newItem)
     })
@@ -117,9 +116,7 @@ let fetchList = () => {
   })
 
   // check for 'today' existence
-  if (lists.includes('today')) {
-    console.log(`it's in!`)
-  } else {
+  if (!lists.includes('today')) {
     let todayList = createList('today', '0')
     listsContainer.appendChild(todayList)
   }
