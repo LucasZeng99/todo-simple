@@ -21,10 +21,10 @@ let itemsContainer = document.getElementById('items') // li
  */
 
 // helper functions (independant)
-let createItem = (val) => {
+let createItem = (val, id) => {
   let newItem = document.createElement('ul')
       newItem.classList.add('item')
-      newItem.id = val
+      newItem.id = 'item-' + id
       newItem.textContent = val
 
       // listeners for every item of a list.
@@ -36,25 +36,26 @@ let createItem = (val) => {
       })
   return newItem
 }
-let createList = (val) => {
+let createList = (val, id) => {
   let newList = document.createElement('ul')
-    newList.classList.add('list-name')
-    newList.id = val
-    newList.textContent = val
-    newList.addEventListener('click', () => {
-      changeTarget(newList)
-    })
-    return newList
+  newList.classList.add('list-name')
+  newList.id = 'list-' + id
+  newList.textContent = val
+  newList.addEventListener('click', () => {
+    changeTarget(newList)
+  })
+  return newList
 } // **warning** dependent on changeTarget()
+
 // updating functions
 let storeCurrentList = () => {
   // create object to be stored.
   let items = document.getElementsByClassName('item')
   let itemsArray = []
   for (item of items) {
-    itemsArray.push(item.id)
+    itemsArray.push(item.textContent)
   }
-  localStorage.setItem(targetList.id, JSON.stringify(itemsArray))
+  localStorage.setItem(targetList.textContent, JSON.stringify(itemsArray))
 }
 
 /**
@@ -66,6 +67,7 @@ let changeTarget = (newTargetElement) => {
   targetList.classList.remove('chosen-list')
   targetList = newTargetElement
   targetList.classList.add('chosen-list')
+
   // remove all current items of the old list
   while (itemsContainer.firstChild) {
     itemsContainer.removeChild(itemsContainer.firstChild)
@@ -85,13 +87,15 @@ let changeTarget = (newTargetElement) => {
  * dependent on `createItem()` and `itemsContainer`.
  */
 let fetchItems = () => {
-  let items = localStorage.getItem(targetList.id)
+  let items = localStorage.getItem(targetList.textContent)
   items = JSON.parse(items)
   if (items !== null) {
-    for (let itemId of items) {
-      let newItem = createItem(itemId)
+    // push to item containers for this targetlist.
+    items.forEach((itemId, index) => {
+      console.log('index of item: ' + index)
+      let newItem = createItem(itemId, index)
       itemsContainer.appendChild(newItem)
-    } // push to item containers for this targetlist.
+    })
   }
 }
 
@@ -100,7 +104,6 @@ let fetchItems = () => {
  */
 let fetchList = () => {
   let lists = Object.keys(localStorage)
-  console.log(`lists: ${lists}`)
 
   // remove all list to avoid repetance
   while (listsContainer.firstChild) {
@@ -108,21 +111,21 @@ let fetchList = () => {
   }
 
   // push all list to list container
-  for (let listId of lists) {
-    let newList = createList(listId)
+  lists.forEach((listId, index) => {
+    let newList = createList(listId, index)
     listsContainer.appendChild(newList)
-  }
+  })
 
   // check for 'today' existence
   if (lists.includes('today')) {
     console.log(`it's in!`)
   } else {
-    let todayList = createList('today')
+    let todayList = createList('today', '0')
     listsContainer.appendChild(todayList)
   }
 
   // default list target to today
-  let defaultListTarget = document.getElementById('today')
+  let defaultListTarget = document.getElementById('list-0')
   targetList = defaultListTarget
   targetList.classList.add('chosen-list')
 }
@@ -140,7 +143,7 @@ buttonAddList.addEventListener('click', () => {
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
-      let newList = createList(inputElement.value)
+      let newList = createList(inputElement.value, listsContainer.childElementCount)
       listsContainer.appendChild(newList)
       // change target list to current list
       changeTarget(newList)
@@ -165,7 +168,7 @@ buttonAddItem.addEventListener('click', () => {
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
-      let newItem = createItem(inputElement.value)
+      let newItem = createItem(inputElement.value, itemsContainer.childElementCount)
       itemsContainer.appendChild(newItem)
       // destruct input element
       inputElement.blur()
