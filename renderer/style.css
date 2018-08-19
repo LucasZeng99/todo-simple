@@ -3,6 +3,8 @@
         padding: 0;
         box-sizing: border-box;
         list-style: none;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        transition: 0.2s;
 }
 ul {
         list-style: none;
@@ -101,8 +103,9 @@ main {
 }
 
 .todo-main-bg {
-        height: 60px;
-        background-color: #303F9F;
+        height: 200px;
+        background-image: url('./img/todo-bg.jpg');
+        background-position: -50px;
 }
 
 .todo-main-items {
@@ -113,17 +116,50 @@ main {
         text-decoration: none;
         list-style: none;
 }
-
+.item-container {
+        display: flex;
+        height: 50px;
+        width: calc(100%);
+}
 .item {
+        outline: none;
+        border: none;
+        font-size: 1rem;
         padding: 5px 10px;
         text-align: left;
         line-height: 40px;
         vertical-align: middle;
-        background-color: #F5F5F5;
-        width: calc(100%-20px); height: 50px;
+        background-color: #F1F1F1;
+        width: calc(100%); height: 50px;
         border-bottom: rgb(150, 195, 218) solid 2px;
 }
+.item:hover {
+        background-color: #FaFaFa;
+        
+}
 
+.item-container > div {
+        height: auto; /* to be changed on hover */
+        width: 0;
+        transition: 0.2s;
+        line-height: 50px;
+        text-align: center;
+        vertical-align: middle;
+        overflow: hidden;
+}
+
+.finishBox {
+        background-color: #90ee90;
+}
+
+.deleteBox {
+        background-color: #FF5722;
+}
+
+.item-container:hover > div {
+        width: 60px;
+        
+}
 #item-add {
         text-align: center;
         height: 50px;

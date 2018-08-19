@@ -21,20 +21,59 @@ let itemsContainer = document.getElementById('items') // li
  */
 // helper functions (independant)
 let createItem = (val, id) => {
-  let newItem = document.createElement('ul')
+  let newItemContainer = document.createElement('ul')
+  newItemContainer.id = 'item-' + id
+  newItemContainer.classList.add('item-container')
+  let newItem = document.createElement('input')
+      newItem.value = val
       newItem.classList.add('item')
-      newItem.id = 'item-' + id
-      newItem.textContent = val
-
       // listeners for every item of a list.
-      newItem.addEventListener('mouseup', e => {
-        if (e.button === 2) { // a right click
-
-        } else if (e.button === 0) {
-          console.log('a left click')
+      newItem.addEventListener('keyup', e => {
+        if (e.key === 'Enter') {
+          newItem.blur()
         }
       })
-  return newItem
+      newItem.addEventListener('blur', e => {
+        if (newItem.value.length < 1) {
+          newItemContainer.remove()
+        }
+        storeCurrentList()
+      })
+  let finishBox = document.createElement('div')
+      finishBox.classList.add('finishBox')
+      finishBox.textContent = 'done'
+      finishBox.addEventListener('click', e => {
+        if (newItem.style.textDecoration === 'line-through') {
+          newItem.style.textDecoration = 'none'
+        }
+        else newItem.style.textDecoration = 'line-through'
+      })
+  let deleteBox = document.createElement('div')
+      deleteBox.classList.add('deleteBox')
+      deleteBox.textContent = 'X'
+      deleteBox.addEventListener('click', e => {
+        newItemContainer.remove()
+        storeCurrentList()
+      })
+  newItemContainer.appendChild(newItem)
+  newItemContainer.appendChild(finishBox)
+  newItemContainer.appendChild(deleteBox)
+
+  newItemContainer.addEventListener('click', e => {
+    if (newItem.style.textDecoration === 'line-through') {
+      finishBox.textContent = 'undo'
+      finishBox.style.backgroundColor = '#808080'
+    } else {
+      finishBox.textContent = 'done'
+      finishBox.style.backgroundColor = '#90ee90'
+    }
+    deleteBox.style.display = 'block'
+  })
+  // newItemContainer.addEventListener('mouseleave', e => {
+  //   finishBox.style.display = 'none'
+  //   deleteBox.style.display = 'none'
+  // })
+  return newItemContainer
 }
 let createList = (val, id) => {
   let newList = document.createElement('ul')
@@ -53,7 +92,7 @@ let storeCurrentList = () => {
   let items = document.getElementsByClassName('item')
   let itemsArray = []
   for (item of items) {
-    itemsArray.push(item.textContent)
+    itemsArray.push(item.value)
   }
   localStorage.setItem(targetList.textContent, JSON.stringify(itemsArray))
 }
