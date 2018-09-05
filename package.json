@@ -5,10 +5,16 @@
   "main": "main.js",
   "author": "Lucas Zeng",
   "license": "MIT",
-  "dependencies": {
-    "electron": "^2.0.7"
-  },
+  "dependencies": {},
   "scripts": {
-    "dev": "electron ."
+    "dev": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^2.0.7",
+    "electron-builder": "^20.28.1"
+  },
+  "build": {
+    "appId": "com.electron.lucas-simple-todo"
   }
 }

@@ -6,7 +6,6 @@ createMainWindow = () => {
     win = new BrowserWindow({frame: false, width: 1000, height: 800, minWidth: 300, minHeight: 600})
 
     win.loadFile(path.resolve(__dirname, './renderer/index.html'))
-    win.webContents.openDevTools()
     win.on('closed', () => {
         app.quit()
     })

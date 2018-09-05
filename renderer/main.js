@@ -93,6 +93,12 @@ let storeCurrentList = () => {
   let itemsArray = []
   for (item of items) {
     itemsArray.push(item.value)
+    // if (item.style.textDecoration != none) {
+    //   itemsArray.push(item.value + '1') // true if it's done.
+    // }
+    // else(items.style.textDecoration) {
+    //   itemsArray.push(item.value + '0') // 0 if it's not done.
+    // }
   }
   localStorage.setItem(targetList.textContent, JSON.stringify(itemsArray))
 }
