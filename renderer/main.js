@@ -1,4 +1,4 @@
-// const {ipcRenderer} = require('electron')
+const {ipcRenderer} = require('electron')
 
 // element targeting
 let buttonClose = document.getElementById('X')
@@ -194,7 +194,7 @@ let fetchList = () => {
   })
 
   // check for 'today' existence
-  if (!lists.includes('today')) {
+  if (lists.length < 1) {
     let todayList = createList('today', '0')
     listsContainer.appendChild(todayList)
   }
