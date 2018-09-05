@@ -75,17 +75,38 @@ main {
         text-decoration: none;
         list-style: none;
 }
-
-.list-name {
+.list-container {
         height: 40px;
         line-height: 40px;
         padding-left: 10px;
         text-align: left;
         vertical-align: middle;
 }
-.list-name:hover {
+.list-name {
+        height: 40px; width: 160px;
+        line-height: 40px;
+        padding-left: 10px;
+        text-align: left;
+        vertical-align: middle;
+        display: inline-block;
+}
+.list-btn {
+        width: 30px; height: 40px;
+        display: inline-block;
+        flex-basis: 40px;
+        text-align: center;
+        transition: 0.3s;
+        position: relative;
+        right: -30px;
+}
+
+.list-container:hover {
         background-color: rgb(136, 190, 214);
 }
+.list-container:hover > .list-btn {
+        right: 0;
+}
+
 .chosen-list {
         background-color: rgb(66, 124, 153);
 }
@@ -169,7 +190,6 @@ main {
 #item-add:hover {
         background-color: rgb(225, 230, 238);
 }
-
 #list-add {
         text-align: center;
         vertical-align: middle;

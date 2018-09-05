@@ -1,4 +1,4 @@
-const {ipcRenderer} = require('electron')
+// const {ipcRenderer} = require('electron')
 
 // element targeting
 let buttonClose = document.getElementById('X')
@@ -21,6 +21,7 @@ let itemsContainer = document.getElementById('items') // li
  */
 // helper functions (independant)
 let createItem = (val, id, finished) => {
+  // create an item in a list
   let newItemContainer = document.createElement('ul')
   newItemContainer.id = 'item-' + id
   newItemContainer.classList.add('item-container')
@@ -46,7 +47,13 @@ let createItem = (val, id, finished) => {
 
   let finishBox = document.createElement('div')
       finishBox.classList.add('finishBox')
-      finishBox.textContent = 'done'
+      if (newItem.style.textDecoration === 'line-through') {
+        finishBox.textContent = 'undo'
+        finishBox.style.backgroundColor = '#808080'
+      } else {
+        finishBox.textContent = 'done'
+        finishBox.style.backgroundColor = '#90ee90'
+      }
       finishBox.addEventListener('click', () => {
         if (newItem.style.textDecoration === 'line-through') {
           newItem.style.textDecoration = 'none'
@@ -86,14 +93,31 @@ let createItem = (val, id, finished) => {
 
 
 let createList = (val, id) => {
-  let newList = document.createElement('ul')
+  let newListContainer = document.createElement('ul')
+  newListContainer.id = 'list-' + id + '-container'
+  newListContainer.classList.add('list-container')
+  newListContainer.addEventListener('click', () => {
+    changeTarget(newListContainer)
+  })
+
+  let newList = document.createElement('p')
   newList.classList.add('list-name')
   newList.id = 'list-' + id
   newList.textContent = val
-  newList.addEventListener('click', () => {
-    changeTarget(newList)
-  })
-  return newList
+  
+  
+  let deleteBox = document.createElement('div')
+      deleteBox.classList.add('deleteBox')
+      deleteBox.classList.add('list-btn')
+      deleteBox.textContent = 'X'
+      deleteBox.addEventListener('click', e => {
+        newListContainer.remove()
+        localStorage.removeItem(newList.textContent)
+      })
+  newListContainer.appendChild(newList)
+  newListContainer.appendChild(deleteBox)
+  console.log(newList.textContent)
+  return newListContainer
 } // **warning** dependent on changeTarget()
 
 // updating functions
@@ -110,7 +134,7 @@ let storeCurrentList = () => {
       itemsArray.push(item.value + '0') // 0 if it's not done.
     }
   }
-  localStorage.setItem(targetList.textContent, JSON.stringify(itemsArray))
+  localStorage.setItem(targetList.firstChild.textContent, JSON.stringify(itemsArray))
 }
 
 /**
@@ -141,7 +165,7 @@ let changeTarget = (newTargetElement) => {
  * dependent on `createItem()` and `itemsContainer`.
  */
 let fetchItems = () => {
-  let items = localStorage.getItem(targetList.textContent)
+  let items = localStorage.getItem(targetList.firstChild.textContent)
   items = JSON.parse(items)
   if (items !== null) {
     // push to item containers for this targetlist.
@@ -176,7 +200,7 @@ let fetchList = () => {
   }
 
   // default list target to today
-  let defaultListTarget = document.getElementById('list-0')
+  let defaultListTarget = document.getElementById('list-0-container')
   targetList = defaultListTarget
   targetList.classList.add('chosen-list')
 }
