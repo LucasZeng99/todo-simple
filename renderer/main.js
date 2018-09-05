@@ -20,7 +20,7 @@ let itemsContainer = document.getElementById('items') // li
  * 
  */
 // helper functions (independant)
-let createItem = (val, id) => {
+let createItem = (val, id, finished) => {
   let newItemContainer = document.createElement('ul')
   newItemContainer.id = 'item-' + id
   newItemContainer.classList.add('item-container')
@@ -39,15 +39,23 @@ let createItem = (val, id) => {
         }
         storeCurrentList()
       })
+  // check if this item has been checked as finished.
+  if (finished == '1') {
+    newItem.style.textDecoration = 'line-through'
+  }
+
   let finishBox = document.createElement('div')
       finishBox.classList.add('finishBox')
       finishBox.textContent = 'done'
-      finishBox.addEventListener('click', e => {
+      finishBox.addEventListener('click', () => {
         if (newItem.style.textDecoration === 'line-through') {
           newItem.style.textDecoration = 'none'
         }
         else newItem.style.textDecoration = 'line-through'
+
+        storeCurrentList()
       })
+      
   let deleteBox = document.createElement('div')
       deleteBox.classList.add('deleteBox')
       deleteBox.textContent = 'X'
@@ -75,6 +83,8 @@ let createItem = (val, id) => {
   // })
   return newItemContainer
 }
+
+
 let createList = (val, id) => {
   let newList = document.createElement('ul')
   newList.classList.add('list-name')
@@ -92,13 +102,13 @@ let storeCurrentList = () => {
   let items = document.getElementsByClassName('item')
   let itemsArray = []
   for (item of items) {
-    itemsArray.push(item.value)
-    // if (item.style.textDecoration != none) {
-    //   itemsArray.push(item.value + '1') // true if it's done.
-    // }
-    // else(items.style.textDecoration) {
-    //   itemsArray.push(item.value + '0') // 0 if it's not done.
-    // }
+    // itemsArray.push(item.value)
+    if (item.style.textDecoration === 'line-through') {
+      itemsArray.push(item.value + '1') // true if it's done.
+    }
+    else {
+      itemsArray.push(item.value + '0') // 0 if it's not done.
+    }
   }
   localStorage.setItem(targetList.textContent, JSON.stringify(itemsArray))
 }
@@ -121,7 +131,6 @@ let changeTarget = (newTargetElement) => {
 
   // remove all input elements
   let inputElements = document.getElementsByClassName('input')
-  console.log(inputElements)
   for (let el of inputElements) {
     el.blur()
   }
@@ -137,7 +146,7 @@ let fetchItems = () => {
   if (items !== null) {
     // push to item containers for this targetlist.
     items.forEach((itemId, index) => {
-      let newItem = createItem(itemId, index)
+      let newItem = createItem(itemId.slice(0, -1), index, itemId.slice(-1))
       itemsContainer.appendChild(newItem)
     })
   }
@@ -210,7 +219,9 @@ buttonAddItem.addEventListener('click', () => {
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
-      let newItem = createItem(inputElement.value, itemsContainer.childElementCount)
+      let content = inputElement.value
+      let finished = false
+      let newItem = createItem(content, itemsContainer.childElementCount, finished)
       itemsContainer.appendChild(newItem)
       // destruct input element
       inputElement.blur()
