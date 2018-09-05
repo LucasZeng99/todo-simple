@@ -1,5 +1,6 @@
 # Todo-simple
-Electron based web page todo. With pure HTML, CSS and JavaScript
+Electron based web page todo. With pure HTML, CSS and JavaScript.
+It can also run on browsers once you delete the `require('electron')` line.
 
 ## Functions
 - add, edit, remove, and check a todo item in your list.
@@ -8,6 +9,7 @@ Electron based web page todo. With pure HTML, CSS and JavaScript
 
 ## Todo
 
-- [ ] edit, remove any list.
+- [x] edit, remove any list.
+- [x] maintain checked/unchecked status of each item.
 - [ ] responsive layout in CSS.
 - [ ] more colorful layout design.
