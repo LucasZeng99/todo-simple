@@ -1,5 +1,0 @@
-directories:
-  output: dist
-  buildResources: build
-appId: com.electron.lucas-simple-todo
-electronVersion: 2.0.7
