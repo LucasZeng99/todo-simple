@@ -1,4 +1,4 @@
-// const {ipcRenderer} = require('electron')
+const {ipcRenderer} = require('electron')
 
 // element targeting
 let buttonClose = document.getElementById('X')
@@ -48,10 +48,10 @@ let createItem = (val, id, finished) => {
   let finishBox = document.createElement('div')
       finishBox.classList.add('finishBox')
       if (newItem.style.textDecoration === 'line-through') {
-        finishBox.textContent = 'undo'
+        finishBox.textContent = '\u{2611}'
         finishBox.style.backgroundColor = '#808080'
       } else {
-        finishBox.textContent = 'done'
+        finishBox.textContent = '\u{2610}'
         finishBox.style.backgroundColor = '#90ee90'
       }
       finishBox.addEventListener('click', () => {
@@ -76,10 +76,10 @@ let createItem = (val, id, finished) => {
 
   newItemContainer.addEventListener('click', e => {
     if (newItem.style.textDecoration === 'line-through') {
-      finishBox.textContent = 'undo'
+      finishBox.textContent = '\u{2611}'
       finishBox.style.backgroundColor = '#808080'
     } else {
-      finishBox.textContent = 'done'
+      finishBox.textContent = '\u{2610}'
       finishBox.style.backgroundColor = '#90ee90'
     }
     deleteBox.style.display = 'block'
@@ -93,6 +93,7 @@ let createItem = (val, id, finished) => {
 
 
 let createList = (val, id) => {
+
   let newListContainer = document.createElement('ul')
   newListContainer.id = 'list-' + id + '-container'
   newListContainer.classList.add('list-container')
@@ -214,18 +215,23 @@ fetchItems()
 
 buttonAddList.addEventListener('click', () => {
   let inputElement = document.createElement('input')
-  inputElement.className = 'input'
+  inputElement.className = 'list-input'
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
-      let newList = createList(inputElement.value, listsContainer.childElementCount)
-      listsContainer.appendChild(newList)
-      // change target list to current list
-      changeTarget(newList)
-      // destruct input element
-      inputElement.blur()
-      // store to localStorage
-      storeCurrentList()
+      if (inputElement.value == '') {
+        inputElement.blur()
+      }
+      else {
+        let newList = createList(inputElement.value, listsContainer.childElementCount)
+        listsContainer.appendChild(newList)
+        // change target list to current list
+        changeTarget(newList)
+        // destruct input element
+        inputElement.blur()
+        // store to localStorage
+        storeCurrentList()
+      }
     }
   })
 
@@ -239,17 +245,20 @@ buttonAddList.addEventListener('click', () => {
 
 buttonAddItem.addEventListener('click', () => {
   let inputElement = document.createElement('input')
-  inputElement.className = 'input'
+  inputElement.className = 'item-input'
   inputElement.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       // inserting one more list ul.
-      let content = inputElement.value
-      let finished = false
-      let newItem = createItem(content, itemsContainer.childElementCount, finished)
-      itemsContainer.appendChild(newItem)
-      // destruct input element
+      if (inputElement.value !== '') {
+        let content = inputElement.value
+        let finished = false
+        let newItem = createItem(content, itemsContainer.childElementCount, finished)
+        itemsContainer.appendChild(newItem)
+        // destruct input element
+        inputElement.blur()
+        storeCurrentList()
+      }
       inputElement.blur()
-      storeCurrentList()
     }
   })
 
