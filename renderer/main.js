@@ -5,7 +5,7 @@ let buttonClose = document.getElementById('X')
 let buttonMinimize = document.getElementById('_')
 let buttonAddList = document.getElementById('list-add')
 let buttonAddItem = document.getElementById('item-add')
-
+let buttonToggle = document.getElementsByClassName('todo-menu')[0]
 // app operations
 buttonClose.addEventListener('click', () => ipcRenderer.send('close'))
 buttonMinimize.addEventListener('click', () => ipcRenderer.send('minimize'))
@@ -13,7 +13,7 @@ buttonMinimize.addEventListener('click', () => ipcRenderer.send('minimize'))
 // lists and items container array targeting
 let listsContainer = document.getElementById('list-names')// li
 let itemsContainer = document.getElementById('items') // li
-
+let sideBar = document.getElementsByClassName('todo-sidebar')[0]
 /**
  * 
  * TODO: replace item id with a counter.
@@ -270,4 +270,15 @@ buttonAddItem.addEventListener('click', () => {
   inputElement.focus()
 })
 
-console.log(localStorage)
+buttonToggle.addEventListener('click', () => {
+  // console.log(sideBar.className)
+  if (sideBar.classList.contains('toggle-open')) {
+    sideBar.classList = ['todo-sidebar']
+    console.log('to close')
+  }
+  else {
+    sideBar.classList.add('toggle-open')
+    console.log('to open')
+  }
+})
+// console.log(localStorage)
